@@ -1,0 +1,30 @@
+# This is Heading 1
+## This is Heading 2
+### This is Heading 3
+
+**Bold text**
+
+*Italic text*
+
+# Meeting notes
+Week 1 - [20/09/2024] Intro and set up
+### Meeting Agenda
+- Set up Python environment.
+- Create GitHub repository and test commit workflow.
+- Discuss options for assessment (Option 1: accreted Milky Way globular clusters, Option 2: Faber–Jackson relation in SAMI).
+- Begin light research on options
+### Discussion
+- GitHub repository created and first test commits pushed.
+- COMMIT workflow clarified (≥3 lines of code + ≥3 lines of documentation per week, starting Week 2).
+
+# Meeting notes
+Week 2 - [25/09/2024] Basic python
+### Meeting Agenda
+- Review Python basics mainly lists and control stuff
+- Test commit workflow again, maybe just the basics of lists and loops for review
+- Explore datasets on Moodle and check format
+- Decide on project option (Option 1: accreted Milky Way GCs or Option 2: FJR in SAMI).
+### Discussion
+- https://prappleizer.github.io/ 
+- Using this website as a reference for Python basics and review practice
+- Doing the week 2 tutorial

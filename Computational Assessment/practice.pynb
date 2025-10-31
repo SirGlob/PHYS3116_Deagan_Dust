@@ -1,0 +1,45 @@
+# Minimal master-builder (only pandas methods used in your uploads)
+# 1) Simple KEY = uppercase + remove spaces
+h1["KEY"] = h1["ID"].str.upper().str.replace(" ", "")
+h3["KEY"] = h3["ID"].str.upper().str.replace(" ", "")
+
+# VandenBerg: build ID from '#NGC' (or '# NGC'), else fall back to Name/ID
+if "#NGC" in vb.columns:
+    ngc_col = "#NGC"
+elif "# NGC" in vb.columns:
+    ngc_col = "# NGC"
+else:
+    ngc_col = None
+
+if ngc_col is not None:
+    ngc_num = pd.to_numeric(vb[ngc_col], errors="coerce").astype(str)
+    vb["ID"] = "NGC " + ngc_num
+elif "Name" in vb.columns:
+    vb["ID"] = vb["Name"]
+elif "ID" not in vb.columns:
+    vb["ID"] = ""
+
+vb["KEY"] = vb["ID"].str.upper().str.replace(" ", "")
+
+# Krause: prefer 'Object' if present, else 'ID'
+kr_key_src = "Object" if "Object" in kr.columns else "ID"
+kr["KEY"] = kr[kr_key_src].str.upper().str.replace(" ", "")
+
+# 2) Base = Harris I and Harris III
+base = pd.merge(h1, h3, on="KEY", how="inner", suffixes=("_H1", "_H3"))
+
+# 3) Left-join VandenBerg then Krause
+m1 = pd.merge(base, vb, on="KEY", how="left", suffixes=("", "_VDB"))
+master = pd.merge(m1, kr, on="KEY", how="left", suffixes=("", "_KR"))
+
+# 4) (Optional) light numeric casting for common columns you care about
+for c in ["L","B","R-Sun","R-gc","X","Y","Z",
+          "v_r","v_LSR","sig_v","r_h",
+          "FeH","Age","Age_err","R_G","M_V","v_e0","log_sigma_0",
+          "Mstar","rh","[Fe/H]"]:
+    if c in master.columns:
+        master[c] = pd.to_numeric(master[c], errors="coerce")
+
+# 5 ) Save + tiny summary
+master.to_csv("clusters_master.csv", index=False)
+print("Saved clusters_master.csv with", len(master), "rows")
